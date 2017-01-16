@@ -2,11 +2,12 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model andahrm\edoc\models\Edoc */
 
-$this->title = $model->title;
+$this->title = $model->code." ".$model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('andahrm/edoc', 'Edocs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,19 +26,36 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
+    
+  
+    <?php
+echo \yii2assets\pdfjs\PdfJs::widget([
+  'url' => Url::base().'/..'.$model->getUploadUrl('file'),
+  'buttons'=>[
+    'presentationMode' => false,
+    'openFile' => false,
+    'print' => true,
+    'download' => true,
+    'viewBookmark' => false,
+    'secondaryToolbarToggle' => false,
+    'fullscreen'=>true,
+  ]
+]);
+   ?>
+
+  <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+            //'id',
             'code',
             'date_code',
             'title',
             'file',
+            'file_name',
             'created_at',
             'created_by',
             'updated_at',
             'updated_by',
         ],
     ]) ?>
-
 </div>

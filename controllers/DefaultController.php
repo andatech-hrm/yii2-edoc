@@ -8,6 +8,8 @@ use andahrm\edoc\models\EdocSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 /**
  * DefaultController implements the CRUD actions for Edoc model.
@@ -64,9 +66,14 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new Edoc();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->scenario = 'insert';
+        if ($model->load(Yii::$app->request->post())){
+            if($file = UploadedFile::getInstanceByName('Edoc[file]')){
+              $model->file_name = $file->name;
+            }
+            if($model->save()) {
+              return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -83,9 +90,16 @@ class DefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $model->scenario = 'update';
+        if ($model->load(Yii::$app->request->post())){
+            if($file = UploadedFile::getInstanceByName('Edoc[file]')){
+              $model->file_name = $file->name;
+//               print_r($file);
+//               exit();
+            }
+            if($model->save()) {
+              return $this->redirect(['view', 'id' => $model->id]);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -120,5 +134,22 @@ class DefaultController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+  
+  
+     public function actionEdocList($q = null) {
+        $data = Edoc::find()->where(['LIKE','code',$q])->all();
+        //print_r($data);
+        $out = [];
+        foreach ($data as $d) {
+            $out[] = [
+              'id' => $d->id,
+              'title' => $d->title,
+              'code' => $d->code,
+              'updated_at' => $d->updated_at?Yii::$app->formatter->asDate($d->updated_at):'',
+              'value' => $d->code,
+            ];
+        }
+        echo Json::encode($out);
     }
 }
