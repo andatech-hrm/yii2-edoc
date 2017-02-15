@@ -82,6 +82,40 @@ class DefaultController extends Controller
     }
 
     /**
+     * Creates a new Edoc model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreateAjax($formAction = null)
+    {
+        $model = new Edoc();
+        $model->scenario = 'insert';
+        
+        if(Yii::$app->request->isPost){
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            if ($model->load(Yii::$app->request->post())){
+                if($file = UploadedFile::getInstanceByName('Edoc[file]')){
+                    $model->file_name = $file->name;
+                }
+                $success = false;
+                $result = [];
+                if($model->save()) {
+                    $success = true;
+                    $result = $model->attributes;
+                }
+                
+            }
+            return ['success' => $success, 'result' => $result];
+        }
+        
+        return $this->renderPartial('_form', [
+            'model' => $model,
+            'formAction' => $formAction
+        ]);
+        
+    }
+
+    /**
      * Updates an existing Edoc model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id

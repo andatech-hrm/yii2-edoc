@@ -8,27 +8,33 @@ use yii\web\JsExpression;
 
 use kartik\widgets\DatePicker;
 use kartik\widgets\FileInput;
-use kartik\widgets\Typeahead
+use kartik\widgets\Typeahead;
+use andahrm\setting\models\WidgetSettings;
 /* @var $this yii\web\View */
 /* @var $model andahrm\edoc\models\Edoc */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="edoc-form">
-
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>  
+  <?php
+  $formOptions['options'] = ['enctype' => 'multipart/form-data'];
+  if($formAction !== null)  $formOptions['action'] = $formAction;
+  ?>
+    <?php $form = ActiveForm::begin($formOptions); 
+    ?>  
   
   <div class="row">
     <div class="col-sm-4">      
       <?php 
-      $template = '<div class="block" style="border-bottom:1px;">'.
+      /*$template = '<div class="block" style="border-bottom:1px;">'.
               '<div class="block_content">'.
               '<h2 class="title">{{code}}' .
               '<small class="pull-right">{{updated_at}}</small></h2>' .
               '<p class="excerpt">{{title}}</p>' .             
           '</div></div>';
       ?>
-      <?= $form->field($model, 'code')->widget(Typeahead::classname(),[
+      <?php
+      echo $form->field($model, 'code')->widget(Typeahead::classname(),[
               'options' => ['placeholder' => 'Filter as you type ...'],
               'pluginOptions' => ['highlight'=>true],
               'dataset' => [
@@ -52,7 +58,8 @@ use kartik\widgets\Typeahead
                       //console.log(resp);
                   }',
                ]
-          ]) ?>
+          ])*/ ?>
+        <?php echo $form->field($model, 'code')->textInput(); ?>
     </div>
   </div>
   
@@ -68,7 +75,7 @@ use kartik\widgets\Typeahead
         <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
       </div>
       <div class="col-sm-4">
-        <?php echo $form->field($model, 'date_code')->widget(DatePicker::classname(), [              
+        <?php /*echo $form->field($model, 'date_code')->widget(DatePicker::classname(), [              
                     'pluginOptions' => [
                         'todayHighlight' => true,
                         'autoclose' => true,
@@ -77,8 +84,14 @@ use kartik\widgets\Typeahead
 
                       //'startDate' => date('Y-m-d', strtotime("+3 day"))
                     ]
-                ]);
+                ]);*/
                 ?>
+        <?php echo $form->field($model, 'date_code')->widget(DatePicker::classname(), WidgetSettings::DatePicker([
+          // 'pluginOptions' => [
+          //   'format' => 'yyyy-mm-dd',
+          // ]
+        ]));
+        ?>
       </div>
     </div>
     
@@ -106,3 +119,38 @@ use kartik\widgets\Typeahead
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+
+<?php
+///Surakit
+if($formAction !== null) {
+$js[] = <<< JS
+$(document).on('submit', '#{$form->id}', function(e){
+  e.preventDefault();
+  var form = $(this);
+  var formData = new FormData(form[0]);
+  // alert(form.serialize());
+  
+  $.ajax({
+    url: form.attr('action'),
+    type : 'POST',
+    data: formData,
+    contentType:false,
+    cache: false,
+    processData:false,
+    dataType: "json",
+    success: function(data) {
+      if(data.success){
+        callbackEdoc(data.result);
+      }else{
+        alert('Fail');
+      }
+    }
+  });
+});
+JS;
+
+$this->registerJs(implode("\n", $js));
+}
+?>

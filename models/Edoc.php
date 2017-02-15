@@ -99,7 +99,15 @@ class Edoc extends \yii\db\ActiveRecord
         return $this->hasMany(PersonPostionSalary::className(), ['edoc_id' => 'id']);
     }
   
-  public static function getList(){
-      return ArrayHelper::map(self::find()->all(),'id','code');
+    public static function getList(){
+      return ArrayHelper::map(self::find()->all(),'id','codeTitle1');
+    }
+    
+    public function getCodeTitle(){
+        return $this->code."<br/>".$this->title."<br/><small>".Yii::$app->formatter->asDate($this->date_code)."</small>";
+    }
+    
+    public function getCodeTitle1(){
+        return $this->code." - ".$this->title;
     }
 }
