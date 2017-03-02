@@ -93,6 +93,9 @@ class DefaultController extends Controller
         
         if(Yii::$app->request->isPost){
             \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $success = false;
+            $result=null;
             if ($model->load(Yii::$app->request->post())){
                 if($file = UploadedFile::getInstanceByName('Edoc[file]')){
                     $model->file_name = $file->name;

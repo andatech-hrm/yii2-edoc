@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
-use kartik\widgets\DatePicker;
+use kuakling\datepicker\DatePicker;
 use kartik\widgets\FileInput;
 use kartik\widgets\Typeahead;
 use andahrm\setting\models\WidgetSettings;
@@ -18,7 +18,7 @@ use andahrm\setting\models\WidgetSettings;
 <div class="edoc-form">
   <?php
   $formOptions['options'] = ['enctype' => 'multipart/form-data'];
-  if($formAction !== null)  $formOptions['action'] = $formAction;
+  // if($formAction !== null)  $formOptions['action'] = $formAction;
   ?>
     <?php $form = ActiveForm::begin($formOptions); 
     ?>  
@@ -113,7 +113,7 @@ use andahrm\setting\models\WidgetSettings;
   <hr/>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('andahrm/edoc', 'Create') : Yii::t('andahrm/edoc', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? Yii::t('andahrm', 'Create') : Yii::t('andahrm', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -124,33 +124,33 @@ use andahrm\setting\models\WidgetSettings;
 
 <?php
 ///Surakit
-if($formAction !== null) {
-$js[] = <<< JS
-$(document).on('submit', '#{$form->id}', function(e){
-  e.preventDefault();
-  var form = $(this);
-  var formData = new FormData(form[0]);
-  // alert(form.serialize());
+// if($formAction !== null) {
+// $js[] = <<< JS
+// $(document).on('submit', '#{$form->id}', function(e){
+//   e.preventDefault();
+//   var form = $(this);
+//   var formData = new FormData(form[0]);
+//   // alert(form.serialize());
   
-  $.ajax({
-    url: form.attr('action'),
-    type : 'POST',
-    data: formData,
-    contentType:false,
-    cache: false,
-    processData:false,
-    dataType: "json",
-    success: function(data) {
-      if(data.success){
-        callbackEdoc(data.result);
-      }else{
-        alert('Fail');
-      }
-    }
-  });
-});
-JS;
+//   $.ajax({
+//     url: form.attr('action'),
+//     type : 'POST',
+//     data: formData,
+//     contentType:false,
+//     cache: false,
+//     processData:false,
+//     dataType: "json",
+//     success: function(data) {
+//       if(data.success){
+//         callbackEdoc(data.result);
+//       }else{
+//         alert('Fail');
+//       }
+//     }
+//   });
+// });
+// JS;
 
-$this->registerJs(implode("\n", $js));
-}
+// $this->registerJs(implode("\n", $js));
+// }
 ?>

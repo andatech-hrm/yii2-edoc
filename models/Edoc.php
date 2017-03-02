@@ -3,11 +3,14 @@
 namespace andahrm\edoc\models;
 
 use Yii;
-
+use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use kuakling\datepicker\behaviors\DateBuddhistBehavior;
+use andahrm\setting\models\Helper;
 use yii\helpers\ArrayHelper;
 use mongosoft\file\UploadBehavior;
+use andahrm\person\models\Person;
 //use andahrm\edoc\behavior\UploadBehavior;
 /**
  * This is the model class for table "edoc".
@@ -40,7 +43,7 @@ class Edoc extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'date_code', 'title', 'file'], 'required'],
+            [['code', 'date_code', 'title',], 'required'],
             [['date_code'], 'safe'],
             [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 20],
@@ -69,6 +72,10 @@ class Edoc extends \yii\db\ActiveRecord
                 'path' => '@uploads/edoc/{id}',
                 'url' => '/uploads/edoc/{id}',
             ],
+            'date_code' => [
+                'class' => DateBuddhistBehavior::className(),
+                'dateAttribute' => 'date_code',
+            ],
         ];
     }
 
@@ -79,16 +86,24 @@ class Edoc extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('andahrm/edoc', 'ID'),
-            'code' => Yii::t('andahrm/edoc', 'เลขที่หนังสือ'),
-            'date_code' => Yii::t('andahrm/edoc', 'ลงวันที่'),
-            'title' => Yii::t('andahrm/edoc', 'ชื่อหนังสือ'),
-            'file' => Yii::t('andahrm/edoc', 'ไฟล์เอกสารแนบ'),
-            'file_name' => Yii::t('andahrm/edoc', 'ชื่อไฟล์'),
-            'created_at' => Yii::t('andahrm/edoc', 'Created At'),
-            'created_by' => Yii::t('andahrm/edoc', 'Created By'),
-            'updated_at' => Yii::t('andahrm/edoc', 'Updated At'),
-            'updated_by' => Yii::t('andahrm/edoc', 'Updated By'),
+            'code' => Yii::t('andahrm/edoc', 'Code'),
+            'date_code' => Yii::t('andahrm/edoc', 'Date Code'),
+            'title' => Yii::t('andahrm/edoc', 'Title'),
+            'file' => Yii::t('andahrm/edoc', 'File'),
+            'file_name' => Yii::t('andahrm/edoc', 'File name'),
+            'created_at' => Yii::t('andahrm', 'Created At'),
+            'created_by' => Yii::t('andahrm', 'Created By'),
+            'updated_at' => Yii::t('andahrm', 'Updated At'),
+            'updated_by' => Yii::t('andahrm', 'Updated By'),
         ];
+    }
+    
+     public function getCreatedBy(){      
+        return  $this->hasOne(Person::className(), ['user_id' => 'created_by']);
+    }
+  
+    public function getUpdatedBy(){      
+        return  $this->hasOne(Person::className(), ['user_id' => 'updated_by']);
     }
 
     /**

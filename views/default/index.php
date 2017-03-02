@@ -24,13 +24,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            //'id',
             'code',
-            'date_code',
+            'date_code:date',
             'title',
             'file',
-            // 'created_at',
-            // 'created_by',
+            
+             'created_at:datetime',
+             [
+                 'attribute' => 'created_by',
+                 'value'=>'createdBy.fullname',
+                 ],
+             //'created_by',
             // 'updated_at',
             // 'updated_by',
 
