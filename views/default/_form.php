@@ -18,7 +18,7 @@ use andahrm\setting\models\WidgetSettings;
 <div class="edoc-form">
   <?php
   $formOptions['options'] = ['enctype' => 'multipart/form-data'];
-  // if($formAction !== null)  $formOptions['action'] = $formAction;
+  if($formAction !== null)  $formOptions['action'] = $formAction;
   ?>
     <?php $form = ActiveForm::begin($formOptions); 
     ?>  
@@ -124,33 +124,33 @@ use andahrm\setting\models\WidgetSettings;
 
 <?php
 ///Surakit
-// if($formAction !== null) {
-// $js[] = <<< JS
-// $(document).on('submit', '#{$form->id}', function(e){
-//   e.preventDefault();
-//   var form = $(this);
-//   var formData = new FormData(form[0]);
-//   // alert(form.serialize());
+if($formAction !== null) {
+$js[] = <<< JS
+$(document).on('submit', '#{$form->id}', function(e){
+  e.preventDefault();
+  var form = $(this);
+  var formData = new FormData(form[0]);
+  // alert(form.serialize());
   
-//   $.ajax({
-//     url: form.attr('action'),
-//     type : 'POST',
-//     data: formData,
-//     contentType:false,
-//     cache: false,
-//     processData:false,
-//     dataType: "json",
-//     success: function(data) {
-//       if(data.success){
-//         callbackEdoc(data.result);
-//       }else{
-//         alert('Fail');
-//       }
-//     }
-//   });
-// });
-// JS;
+  $.ajax({
+    url: form.attr('action'),
+    type : 'POST',
+    data: formData,
+    contentType:false,
+    cache: false,
+    processData:false,
+    dataType: "json",
+    success: function(data) {
+      if(data.success){
+        callbackEdoc(data.result);
+      }else{
+        alert('Fail');
+      }
+    }
+  });
+});
+JS;
 
-// $this->registerJs(implode("\n", $js));
-// }
+$this->registerJs(implode("\n", $js));
+}
 ?>
