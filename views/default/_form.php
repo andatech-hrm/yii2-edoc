@@ -97,14 +97,17 @@ use andahrm\setting\models\WidgetSettings;
     
     <div class="well well-small">
         <?= $form->field($model, 'file')->widget(FileInput::classname(), [
-            'options' => ['accept' => 'pdf/*'],
+            'options' => ['accept' => 'pdf/*,image/*'],
             'pluginOptions' => [
               'previewFileType' => 'pdf',
-              //'showPreview' => false,
-              'showCaption' => false,
               'elCaptionText' => '#customCaption',
-              'uploadUrl' => Url::to(['/edoc/default/file-upload'])
-            ]
+              'uploadUrl' => Url::to(['/edoc/default/file-upload']),
+              'showPreview' => false,
+              'showCaption' => true,
+              'showRemove' => true,
+              'showUpload' => false,
+            ],
+            
         ]);?>
           <span id="customCaption" class="text-success">No file selected</span>
     </div>

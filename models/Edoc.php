@@ -48,7 +48,7 @@ class Edoc extends \yii\db\ActiveRecord
             [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['code'], 'string', 'max' => 20],
             [['title','file_name'], 'string', 'max' => 255],
-            ['file', 'file', 'extensions' => 'doc, docx, pdf', 'on' => ['insert', 'update']],
+            ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update']],
         ];
     }
   
