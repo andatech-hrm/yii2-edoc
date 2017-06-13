@@ -175,7 +175,7 @@ class DefaultController extends Controller
   
   
      public function actionEdocList($q = null) {
-        $data = Edoc::find()->where(['LIKE','code',$q])->all();
+        $data = Edoc::find()->andFilterWhere(['LIKE','code',$q])->all();
         //print_r($data);
         $out = [];
         foreach ($data as $d) {
@@ -189,4 +189,5 @@ class DefaultController extends Controller
         }
         echo Json::encode($out);
     }
+    
 }

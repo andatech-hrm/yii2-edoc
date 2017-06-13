@@ -3,6 +3,7 @@
 namespace andahrm\edoc\models;
 
 use Yii;
+use yii\helpers\Html;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -122,7 +123,20 @@ class Edoc extends \yii\db\ActiveRecord
         return $this->code."<br/>".$this->title."<br/><small>".Yii::$app->formatter->asDate($this->date_code)."</small>";
     }
     
+    public function getCodeDateTitle(){
+        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)."<br/>".$this->title;
+    }
+    
+    public function getCodeDateTitleFile(){
+        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)
+        ."<br/>".$this->title
+        .($this->file?"<br/>"
+        .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
+        $this->getUploadUrl('file'),
+        ['data-pjax'=>0,'target'=>'_blank']):'');
+    }
+    
     public function getCodeTitle1(){
-        return $this->code." - ".$this->title;
+        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)." ".$this->title;
     }
 }
