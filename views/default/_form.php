@@ -16,6 +16,34 @@ use andahrm\setting\models\WidgetSettings;
 ?>
 
 <div class="edoc-form">
+  
+   <?php if($model->file):?>
+    <div class="row">
+      <div class="col-sm-12">
+        <?php
+        
+        if(preg_match('/\.pdf$/i', $model->file)){
+          echo \yii2assets\pdfjs\PdfJs::widget([
+            'url' => Url::base().'/..'.$model->getUploadUrl('file'),
+            'buttons'=>[
+              'presentationMode' => false,
+              'openFile' => false,
+              'print' => true,
+              'download' => true,
+              'viewBookmark' => false,
+              'secondaryToolbarToggle' => false,
+              'fullscreen'=>true,
+            ]
+            ]);
+        }else{
+            echo Html::img($model->getUploadUrl('file', 'preview'), ['class' => 'img-thumbnail','width'=>"100%"])."<br/><br/>";
+        }
+      ?>
+      </div>
+    </div>
+    <?php endif;?>
+  
+  
   <?php
   $formOptions['options'] = ['enctype' => 'multipart/form-data'];
   if($formAction !== null)  $formOptions['action'] = $formAction;
@@ -95,9 +123,11 @@ use andahrm\setting\models\WidgetSettings;
       </div>
     </div>
     
+    
+    
     <div class="well well-small">
         <?= $form->field($model, 'file')->widget(FileInput::classname(), [
-            'options' => ['accept' => 'pdf/*,image/*'],
+            'options' => ['accept' => ['pdf/*','image/*']],
             'pluginOptions' => [
               'previewFileType' => 'pdf',
               'elCaptionText' => '#customCaption',
@@ -111,6 +141,10 @@ use andahrm\setting\models\WidgetSettings;
         ]);?>
           <span id="customCaption" class="text-success">No file selected</span>
     </div>
+    
+   
+    
+    
   </div>
 </div>
   <hr/>

@@ -77,6 +77,7 @@ class DefaultController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'formAction' => null
             ]);
         }
     }
@@ -131,8 +132,6 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post())){
             if($file = UploadedFile::getInstanceByName('Edoc[file]')){
               $model->file_name = $file->name;
-//               print_r($file);
-//               exit();
             }
             if($model->save()) {
               return $this->redirect(['view', 'id' => $model->id]);
@@ -140,6 +139,7 @@ class DefaultController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'formAction' => null
             ]);
         }
     }

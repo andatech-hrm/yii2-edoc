@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 /* @var $this yii\web\View */
 /* @var $model andahrm\edoc\models\Edoc */
@@ -10,6 +11,7 @@ use yii\helpers\Url;
 $this->title = $model->code." ".$model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('andahrm/edoc', 'Edocs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="edoc-view">
 
@@ -29,18 +31,22 @@ $this->params['breadcrumbs'][] = $this->title;
     
   
     <?php
-echo \yii2assets\pdfjs\PdfJs::widget([
-  'url' => Url::base().'/..'.$model->getUploadUrl('file'),
-  'buttons'=>[
-    'presentationMode' => false,
-    'openFile' => false,
-    'print' => true,
-    'download' => true,
-    'viewBookmark' => false,
-    'secondaryToolbarToggle' => false,
-    'fullscreen'=>true,
-  ]
-]);
+if(preg_match('/\.pdf$/i', $model->file)){
+    echo \yii2assets\pdfjs\PdfJs::widget([
+      'url' => Url::base().'/..'.$model->getUploadUrl('file'),
+      'buttons'=>[
+        'presentationMode' => false,
+        'openFile' => false,
+        'print' => true,
+        'download' => true,
+        'viewBookmark' => false,
+        'secondaryToolbarToggle' => false,
+        'fullscreen'=>true,
+      ]
+    ]);
+}elseif($model->file){
+    echo Html::img($model->getUploadUrl('file', 'preview'), ['class' => 'img-thumbnail','width'=>"100%"])."<br/><br/>";
+}
    ?>
 
   <?= DetailView::widget([

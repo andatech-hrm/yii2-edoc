@@ -143,4 +143,9 @@ class Edoc extends \yii\db\ActiveRecord
     public function getCodeTitlePrint(){
         return $this->code." ".Yii::$app->formatter->asDate($this->date_code);
     }
+    
+    public function getTestDate(){
+        $ss = new \yii\i18n\Formatter;
+        return $ss->asDate($this->date_code);
+    }
 }

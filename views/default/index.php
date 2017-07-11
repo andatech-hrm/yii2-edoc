@@ -18,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('andahrm/edoc', 'Create Edoc'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
+<?php //Pjax::begin(); ?>    
+   <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -27,8 +28,17 @@ $this->params['breadcrumbs'][] = $this->title;
             //'id',
             'code',
             'date_code:date',
-            'title',
-            'file',
+            //'testDate',
+            //'title',
+             [
+                 'attribute' => 'title',
+                 'format' => 'html',
+                 'value'=>function($model){
+                     return ($model->file?Html::a("<i class='fa fa-paperclip'></i>",$model->getUploadUrl('file'),["data-pjax"=>"0",'class'=>'text-danger'])." ":"")
+                     .$model->title;
+                 },
+            ],
+            //'file',
             
              'created_at:datetime',
              [
@@ -42,4 +52,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-<?php Pjax::end(); ?></div>
+<?php //Pjax::end(); ?>
+</div>
