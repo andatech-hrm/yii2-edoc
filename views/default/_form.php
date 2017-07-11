@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\web\JsExpression;
 
-use kuakling\datepicker\DatePicker;
+use andahrm\datepicker\DatePicker;
 use kartik\widgets\FileInput;
 use kartik\widgets\Typeahead;
 use andahrm\setting\models\WidgetSettings;

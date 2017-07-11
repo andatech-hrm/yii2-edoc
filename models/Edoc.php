@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\db\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use kuakling\datepicker\behaviors\DateBuddhistBehavior;
+use andahrm\datepicker\behaviors\DateBuddhistBehavior;
 use andahrm\setting\models\Helper;
 use yii\helpers\ArrayHelper;
 use mongosoft\file\UploadBehavior;
