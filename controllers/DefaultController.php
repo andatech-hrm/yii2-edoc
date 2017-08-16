@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\web\UploadedFile;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * DefaultController implements the CRUD actions for Edoc model.
@@ -118,6 +121,43 @@ class DefaultController extends Controller
         ]);
         
     }
+    
+    public function actionCreateAjax1($formAction = null)
+    {
+        $model = new Edoc();
+        $model->scenario = 'insert';
+        
+        if(Yii::$app->request->isPost){
+            \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+            
+            $success = false;
+            $result=null;
+            
+            $request = Yii::$app->request;
+            $post = Yii::$app->request->post();
+            
+            if (Yii::$app->request->isAjax && $model->load($post) && $request->post('ajax')) {
+                return ActiveForm::validate($model); 
+            }elseif($request->post('save') && $model->load($post)){
+                if($file = UploadedFile::getInstanceByName('Edoc[file]')){
+                    $model->file_name = $file->name;
+                }
+                $success = false;
+                $result = [];
+                if($model->save()) {
+                    $success = true;
+                    $result = $model->attributes;
+                }
+                return ['success' => $success, 'result' => $result];
+            }
+        }
+        
+        return $this->renderPartial('_form-ajax', [
+            'model' => $model,
+            'formAction' => $formAction
+        ]);
+        
+    }
 
     /**
      * Updates an existing Edoc model.
@@ -189,5 +229,22 @@ class DefaultController extends Controller
         }
         echo Json::encode($out);
     }
+    
+    public $code;
+    public function actionGetList($q = null, $id = null){
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; //กำหนดการแสดงผลข้อมูลแบบ json
+        $out = ['results'=>['id'=>'','text'=>'']];
+        $model = Edoc::find();
+        if(!is_null($q)){
+            $model->andFilterWhere(['like', 'code', $q]);
+            $model->orFilterWhere(['like', 'title', $q]);
+        
+            $out['results'] = ArrayHelper::getColumn($model->all(),function($model){
+                return ['id'=>$model->id,'text'=>$model->codeTitle1];
+            });
+        }
+        return $out;
+    }
+    
     
 }
