@@ -196,6 +196,14 @@ class DefaultController extends Controller
 
         return $this->redirect(['index']);
     }
+    
+    
+    public function actionDeleteFile($id)
+    {
+        $this->findModel($id)->deleteFile();
+
+        return $this->redirect(['index']);
+    }
 
     /**
      * Finds the Edoc model based on its primary key value.
