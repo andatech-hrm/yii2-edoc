@@ -137,7 +137,7 @@ class Edoc extends \yii\db\ActiveRecord
     }
     
      public function getCodeDateTitleFileLink(){
-        return Html::a($this->code." ".Yii::t('andahrm/edoc', 'Date Code').Yii::$app->formatter->asDate($this->date_code)
+        return Html::a($this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)
         ."<br/>".$this->title,['/edoc/default/view','id'=>$this->id],['data-pjax'=>0])
         .($this->file?"<br/>"
         .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
