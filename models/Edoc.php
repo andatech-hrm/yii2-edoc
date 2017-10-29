@@ -124,11 +124,11 @@ class Edoc extends \yii\db\ActiveRecord
     }
     
     public function getCodeDateTitle(){
-        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)."<br/>".$this->title;
+        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)."<br/>".$this->title;
     }
     
     public function getCodeDateTitleFile(){
-        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)
+        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)
         ."<br/>".$this->title
         .($this->file?"<br/>"
         .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
@@ -146,11 +146,11 @@ class Edoc extends \yii\db\ActiveRecord
     }
     
     public function getCodeTitle1(){
-        return $this->code." ".Yii::$app->formatter->asDate($this->date_code)." ".$this->title;
+        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)." ".$this->title;
     }
     
     public function getCodeTitlePrint(){
-        return $this->code." ".Yii::$app->formatter->asDate($this->date_code);
+        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code);
     }
     
     public function getTestDate(){
