@@ -161,5 +161,9 @@ class Edoc extends \yii\db\ActiveRecord {
         $ss = new \yii\i18n\Formatter;
         return $ss->asDate($this->date_code);
     }
-
+    
+    public function getInsignia(){
+        return $this->hasOne(EdocInsignia::className(),['edoc_id'=>'id']);
+    }
+    
 }

@@ -186,13 +186,13 @@ class InsigniaController extends Controller
     public function actionGetList($q = null, $id = null){
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON; //กำหนดการแสดงผลข้อมูลแบบ json
         $out = ['results'=>['id'=>'','text'=>'']];
-        $model = EdocInsignia::find()->joinWith('edoc',true,'INNET JOIN');
+        $model = EdocInsignia::find()->joinWith('edoc',true,'INNER JOIN');
         if(!is_null($q)){
             $model->andFilterWhere(['like', 'code', $q]);
             $model->orFilterWhere(['like', 'title', $q]);
         
             $out['results'] = ArrayHelper::getColumn($model->all(),function($model){
-                return ['id'=>$model->id,'text'=>$model->codeTitle1];
+                return ['id'=>$model->edoc->id,'text'=>$model->edoc->codeTitle1];
             });
         }
         return $out;
