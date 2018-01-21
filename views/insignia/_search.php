@@ -21,9 +21,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'part_number') ?>
 
+    <?= $form->field($model, 'book_at') ?>
+
     <?= $form->field($model, 'public_date') ?>
 
-    <?= $form->field($model, 'created_at') ?>
+    <?php // echo $form->field($model, 'created_at') ?>
 
     <?php // echo $form->field($model, 'created_by') ?>
 

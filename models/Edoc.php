@@ -12,6 +12,7 @@ use andahrm\setting\models\Helper;
 use yii\helpers\ArrayHelper;
 use mongosoft\file\UploadBehavior;
 use andahrm\person\models\Person;
+
 //use andahrm\edoc\behavior\UploadBehavior;
 /**
  * This is the model class for table "edoc".
@@ -28,48 +29,51 @@ use andahrm\person\models\Person;
  *
  * @property PersonPostionSalary[] $personPostionSalaries
  */
-class Edoc extends \yii\db\ActiveRecord
-{
+class Edoc extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'edoc';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['code', 'date_code', 'title',], 'required'],
-            [['date_code'], 'safe'],
-            [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['code'], 'string', 'max' => 255],
-            [['title','file_name'], 'string', 'max' => 255],
-            ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update']],
+                [['code', 'date_code', 'title',], 'required'],
+                [['date_code'], 'safe'],
+                [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+                [['code'], 'string', 'max' => 255],
+                [['title', 'file_name'], 'string', 'max' => 255],
+                ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update','insert-insignia']],
         ];
     }
-  
-   /**
+    
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios['insert-insignia'] = $scenarios['default'];
+        return $scenarios;
+    }
+
+    /**
      * @inheritdoc
      */
-    function behaviors()
-    {
+    function behaviors() {
         return [
-            [
+                [
                 'class' => BlameableBehavior::className(),
             ],
-            [
+                [
                 'class' => TimestampBehavior::className(),
             ],
-            [
+                [
                 'class' => UploadBehavior::className(),
                 'attribute' => 'file',
                 //'attributeName' => 'file_name',
-                'scenarios' => ['insert', 'update'],
+                'scenarios' => ['insert', 'update','insert-insignia'],
                 'path' => '@uploads/edoc/{id}',
                 'url' => '/uploads/edoc/{id}',
             ],
@@ -83,8 +87,7 @@ class Edoc extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('andahrm/edoc', 'ID'),
             'code' => Yii::t('andahrm/edoc', 'Code'),
@@ -98,69 +101,65 @@ class Edoc extends \yii\db\ActiveRecord
             'updated_by' => Yii::t('andahrm', 'Updated By'),
         ];
     }
-    
-     public function getCreatedBy(){      
-        return  $this->hasOne(Person::className(), ['user_id' => 'created_by']);
+
+    public function getCreatedBy() {
+        return $this->hasOne(Person::className(), ['user_id' => 'created_by']);
     }
-  
-    public function getUpdatedBy(){      
-        return  $this->hasOne(Person::className(), ['user_id' => 'updated_by']);
+
+    public function getUpdatedBy() {
+        return $this->hasOne(Person::className(), ['user_id' => 'updated_by']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPersonPostionSalaries()
-    {
+    public function getPersonPostionSalaries() {
         return $this->hasMany(PersonPostionSalary::className(), ['edoc_id' => 'id']);
     }
-  
-    public static function getList(){
-      return ArrayHelper::map(self::find()->all(),'id','codeTitle1');
+
+    public static function getList() {
+        return ArrayHelper::map(self::find()->all(), 'id', 'codeTitle1');
     }
-    
-    public function getCodeTitle(){
-        return $this->code."<br/>".$this->title."<br/><small>".Yii::$app->formatter->asDate($this->date_code)."</small>";
+
+    public function getCodeTitle() {
+        return $this->code . "<br/>" . $this->title . "<br/><small>" . Yii::$app->formatter->asDate($this->date_code) . "</small>";
     }
-    
-    public function getCodeDateTitle(){
-        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)."<br/>".$this->title;
+
+    public function getCodeDateTitle() {
+        return $this->code . " " . Yii::t('andahrm/edoc', 'Date Code') . " " . Yii::$app->formatter->asDate($this->date_code) . "<br/>" . $this->title;
     }
-    
-    public function getCodeDateTitleFile(){
-        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)
-        ."<br/>".$this->title
-        .($this->file?"<br/>"
-        .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
-        $this->getUploadUrl('file'),
-        ['data-pjax'=>0,'target'=>'_blank']):'');
+
+    public function getCodeDateTitleFile() {
+        return $this->code . " " . Yii::t('andahrm/edoc', 'Date Code') . " " . Yii::$app->formatter->asDate($this->date_code)
+                . "<br/>" . $this->title
+                . ($this->file ? "<br/>"
+                . Html::a("<i class='fa fa-papercl'></i>" . $this->getAttributeLabel('file'), $this->getUploadUrl('file'), ['data-pjax' => 0, 'target' => '_blank']) : '');
     }
-    
-     public function getCodeDateTitleFileLink(){
+
+    public function getCodeDateTitleFileLink() {
         // return Html::a($this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)
         // ."<br/>".$this->title,['/edoc/default/view','id'=>$this->id],['data-pjax'=>0])
         // .($this->file?"<br/>"
         // .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
         // $this->getUploadUrl('file'),
         // ['data-pjax'=>0,'target'=>'_blank']):'');
-        return Html::a($this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)
-        ,['/edoc/default/view','id'=>$this->id],['data-pjax'=>0])
-        .($this->file?"<br/>"
-        .Html::a("<i class='fa fa-papercl'></i>".$this->getAttributeLabel('file'),
-        $this->getUploadUrl('file'),
-        ['data-pjax'=>0,'target'=>'_blank']):'');
+        return Html::a($this->code . " " . Yii::t('andahrm/edoc', 'Date Code') . " " . Yii::$app->formatter->asDate($this->date_code)
+                        , ['/edoc/default/view', 'id' => $this->id], ['data-pjax' => 0])
+                . ($this->file ? "<br/>"
+                . Html::a("<i class='fa fa-papercl'></i>" . $this->getAttributeLabel('file'), $this->getUploadUrl('file'), ['data-pjax' => 0, 'target' => '_blank']) : '');
     }
-    
-    public function getCodeTitle1(){
-        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code)." ".$this->title;
+
+    public function getCodeTitle1() {
+        return $this->code . " " . Yii::t('andahrm/edoc', 'Date Code') . " " . Yii::$app->formatter->asDate($this->date_code) . " " . $this->title;
     }
-    
-    public function getCodeTitlePrint(){
-        return $this->code." ".Yii::t('andahrm/edoc', 'Date Code')." ".Yii::$app->formatter->asDate($this->date_code);
+
+    public function getCodeTitlePrint() {
+        return $this->code . " " . Yii::t('andahrm/edoc', 'Date Code') . " " . Yii::$app->formatter->asDate($this->date_code);
     }
-    
-    public function getTestDate(){
+
+    public function getTestDate() {
         $ss = new \yii\i18n\Formatter;
         return $ss->asDate($this->date_code);
     }
+
 }

@@ -18,6 +18,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'part_number')->textInput(['maxlength' => true]) ?>
 
+    <?= $form->field($model, 'book_at')->textInput(['maxlength' => true]) ?>
+
     <?= $form->field($model, 'public_date')->textInput() ?>
 
     <?= $form->field($model, 'created_at')->textInput() ?>

@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'edoc_id',
             'book_number',
             'part_number',
+            'book_at',
             'public_date',
             'created_at',
             'created_by',

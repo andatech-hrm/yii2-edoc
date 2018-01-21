@@ -19,7 +19,7 @@ class EdocInsigniaSearch extends EdocInsignia
     {
         return [
             [['edoc_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['book_number', 'part_number', 'public_date'], 'safe'],
+            [['book_number', 'part_number', 'book_at', 'public_date'], 'safe'],
         ];
     }
 
@@ -68,7 +68,8 @@ class EdocInsigniaSearch extends EdocInsignia
         ]);
 
         $query->andFilterWhere(['like', 'book_number', $this->book_number])
-            ->andFilterWhere(['like', 'part_number', $this->part_number]);
+            ->andFilterWhere(['like', 'part_number', $this->part_number])
+            ->andFilterWhere(['like', 'book_at', $this->book_at]);
 
         return $dataProvider;
     }

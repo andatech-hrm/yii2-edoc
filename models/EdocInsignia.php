@@ -10,6 +10,7 @@ use Yii;
  * @property int $edoc_id
  * @property string $book_number File
  * @property string $part_number ชื่อไฟล์
+ * @property string $book_at
  * @property string $public_date
  * @property int $created_at
  * @property int $created_by
@@ -34,10 +35,10 @@ class EdocInsignia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['edoc_id', 'book_number', 'part_number'], 'required'],
+            [['edoc_id', 'book_number', 'part_number', 'book_at'], 'required'],
             [['edoc_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['public_date'], 'safe'],
-            [['book_number', 'part_number'], 'string', 'max' => 20],
+            [['book_number', 'part_number', 'book_at'], 'string', 'max' => 20],
             [['edoc_id'], 'unique'],
             [['edoc_id'], 'exist', 'skipOnError' => true, 'targetClass' => Edoc::className(), 'targetAttribute' => ['edoc_id' => 'id']],
         ];
@@ -52,6 +53,7 @@ class EdocInsignia extends \yii\db\ActiveRecord
             'edoc_id' => Yii::t('andahrm/edoc', 'Edoc ID'),
             'book_number' => Yii::t('andahrm/edoc', 'Book Number'),
             'part_number' => Yii::t('andahrm/edoc', 'Part Number'),
+            'book_at' => Yii::t('andahrm/edoc', 'Book At'),
             'public_date' => Yii::t('andahrm/edoc', 'Public Date'),
             'created_at' => Yii::t('andahrm/edoc', 'Created At'),
             'created_by' => Yii::t('andahrm/edoc', 'Created By'),
