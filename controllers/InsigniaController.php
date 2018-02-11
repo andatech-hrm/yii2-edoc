@@ -180,7 +180,7 @@ class InsigniaController extends Controller {
             $datas = explode(" ", $q);
             foreach ($datas as $data) {
                 $model->orFilterWhere(['like', 'book_number', $data]);
-                $model->orFilterWhere(['like', 'path_number', $data]);
+                $model->orFilterWhere(['like', 'part_number', $data]);
                 $model->orFilterWhere(['like', 'book_at', $data]);
                 $model->orFilterWhere(['like', 'book_date', $data]);
                 $model->orFilterWhere(['like', 'public_date', $data]);
