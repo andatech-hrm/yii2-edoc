@@ -18,8 +18,8 @@ class EdocInsigniaSearch extends EdocInsignia
     public function rules()
     {
         return [
-            [['edoc_id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['book_number', 'part_number', 'book_at', 'public_date'], 'safe'],
+            [['id', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['book_number', 'part_number', 'book_at', 'public_date', 'book_date', 'file', 'file_name'], 'safe'],
         ];
     }
 
@@ -59,8 +59,9 @@ class EdocInsigniaSearch extends EdocInsignia
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'edoc_id' => $this->edoc_id,
+            'id' => $this->id,
             'public_date' => $this->public_date,
+            'book_date' => $this->book_date,
             'created_at' => $this->created_at,
             'created_by' => $this->created_by,
             'updated_at' => $this->updated_at,
@@ -69,7 +70,9 @@ class EdocInsigniaSearch extends EdocInsignia
 
         $query->andFilterWhere(['like', 'book_number', $this->book_number])
             ->andFilterWhere(['like', 'part_number', $this->part_number])
-            ->andFilterWhere(['like', 'book_at', $this->book_at]);
+            ->andFilterWhere(['like', 'book_at', $this->book_at])
+            ->andFilterWhere(['like', 'file', $this->file])
+            ->andFilterWhere(['like', 'file_name', $this->file_name]);
 
         return $dataProvider;
     }

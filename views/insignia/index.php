@@ -19,23 +19,47 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('andahrm/edoc', 'Create Edoc Insignia'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'edoc_id',
+                ['class' => 'yii\grid\SerialColumn'],
+            //'id',
             'book_number',
             'part_number',
             'book_at',
-            'public_date',
-            //'created_at',
+            [
+                'attribute' => 'public_date',
+                'format' => 'date',
+                'value'=>function($model){
+                    if($model->public_date == '0000-00-00') return null;
+                    return $model->public_date;
+                }
+            ],
+            [
+                'attribute' => 'book_date',
+                'format' => 'date',
+                'value'=>function($model){
+                    if($model->book_date == '0000-00-00') return null;
+                    return $model->book_date;
+                }
+            ],
+            [
+                'attribute' => 'file',
+                'format' => 'html',
+                'value'=>function($model){
+                    if($model->file == null) return null;
+                    return Html::a($model->file,$model->getUploadUrl('file'));
+                }
+            ],
+            //'file_name',
+            'created_at:datetime',
             //'created_by',
             //'updated_at',
             //'updated_by',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
 </div>

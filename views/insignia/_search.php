@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'edoc_id') ?>
+    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'book_number') ?>
 
@@ -24,6 +24,12 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'book_at') ?>
 
     <?= $form->field($model, 'public_date') ?>
+
+    <?php // echo $form->field($model, 'book_date') ?>
+
+    <?php // echo $form->field($model, 'file') ?>
+
+    <?php // echo $form->field($model, 'file_name') ?>
 
     <?php // echo $form->field($model, 'created_at') ?>
 

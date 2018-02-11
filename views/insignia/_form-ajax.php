@@ -20,7 +20,7 @@ use andahrm\setting\models\WidgetSettings;
         <div class="row">
             <div class="col-sm-12">
                 <?php
-                if (preg_match('/\.pdf$/i', $model->file)) {
+                    if (preg_match('/\.pdf$/i', $model->file)) {
                     echo \yii2assets\pdfjs\PdfJs::widget([
                         'url' => Url::base() . '/..' . $model->getUploadUrl('file'),
                         'buttons' => [
@@ -52,34 +52,28 @@ if ($formAction !== null)
 
     <div class="row">
         <div class="col-sm-3">   
-            <?php echo $form->field($modelInsignia, 'book_number')->textInput(); ?>
+            <?php echo $form->field($model, 'book_number')->textInput(); ?>
         </div>
 
         <div class="col-sm-3">   
-            <?php echo $form->field($modelInsignia, 'part_number')->textInput(); ?>
+            <?php echo $form->field($model, 'part_number')->textInput(); ?>
         </div>
 
         <div class="col-sm-3">   
-            <?php echo $form->field($modelInsignia, 'book_at')->textInput(); ?>
+            <?php echo $form->field($model, 'book_at')->textInput(); ?>
         </div>      
 
         <div class="col-sm-3">        
-            <?php echo $form->field($model, 'date_code')->widget(DatePicker::classname(), WidgetSettings::DatePicker()); ?>
+            <?php echo $form->field($model, 'book_date')->widget(DatePicker::classname(), WidgetSettings::DatePicker()); ?>
         </div>
     </div>
+    
 
     <div class="row">
-        <div class="col-sm-3">   
-            <?php echo $form->field($model, 'code', ['enableAjaxValidation' => true])->textInput(); ?>
+        <div class="col-sm-3">        
+            <?php echo $form->field($model, 'public_date')->widget(DatePicker::classname(), WidgetSettings::DatePicker()); ?>
         </div>
-
-        <div class="col-sm-6">
-            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-9">
             <?=
             $form->field($model, 'file')->widget(FileInput::classname(), [
                 'options' => ['accept' => ['pdf/*', 'image/*']],
@@ -134,7 +128,7 @@ $(document).on('submit', '#{$form->id}', function(e){
     dataType: "json",
     success: function(data) {
       if(data.success){
-        callbackEdoc(data.result,"#{$form->id}");
+        callbackEdocInsignia(data.result,"#{$form->id}");
       }else{
         alert('Fail');
       }
