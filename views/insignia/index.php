@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->book_date;
                 }
             ],
+                    'usage',
             [
                 'attribute' => 'file',
                 'format' => 'html',

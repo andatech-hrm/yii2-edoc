@@ -3,17 +3,19 @@
 namespace andahrm\edoc\controllers;
 
 use Yii;
-use andahrm\edoc\models\Edoc;
-use andahrm\edoc\models\EdocInsignia;
-use andahrm\edoc\models\EdocInsigniaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ArrayDataProvider;
 use yii\helpers\Json;
 use yii\web\UploadedFile;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+####
+use andahrm\edoc\models\Edoc;
+use andahrm\edoc\models\EdocInsignia;
+use andahrm\edoc\models\EdocInsigniaSearch;
 
 /**
  * InsigniaController implements the CRUD actions for EdocInsignia model.
@@ -55,8 +57,20 @@ class InsigniaController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
+        $model = $this->findModel($id);
+        $modelPerson = $model->insigniaPeople;
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $modelPerson,
+//            'sort' => [
+//                'attributes' => ['id', 'username', 'email'],
+//            ],
+            'pagination' => false,
+        ]);
+
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $model,
+                    'dataProvider' => $dataProvider
         ]);
     }
 
@@ -108,6 +122,7 @@ class InsigniaController extends Controller {
 
                     $success = true;
                     $result = $model->attributes;
+                    $result['title'] = $model->title;
                 } else {
                     $err[] = $model->getErrors();
                 }

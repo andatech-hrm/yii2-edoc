@@ -9,6 +9,7 @@ use yii\helpers\ArrayHelper;
 use mongosoft\file\UploadBehavior;
 ####
 use andahrm\datepicker\behaviors\DateBuddhistBehavior;
+use andahrm\insignia\models\InsigniaPerson;
 
 /**
  * This is the model class for table "edoc_insignia".
@@ -89,15 +90,17 @@ class EdocInsignia extends \yii\db\ActiveRecord {
             'book_number' => Yii::t('andahrm/edoc', 'Book Number'),
             'part_number' => Yii::t('andahrm/edoc', 'Part Number'),
             'book_at' => Yii::t('andahrm/edoc', 'Book At'),
-            'public_date' => Yii::t('andahrm/edoc', 'Public Date'),
-            'created_at' => Yii::t('andahrm/edoc', 'Created At'),
-            'created_by' => Yii::t('andahrm/edoc', 'Created By'),
-            'updated_at' => Yii::t('andahrm/edoc', 'Updated At'),
-            'updated_by' => Yii::t('andahrm/edoc', 'Updated By'),
+            'public_date' => Yii::t('andahrm', 'Public Date'),
             'id' => Yii::t('andahrm/edoc', 'ID'),
             'book_date' => Yii::t('andahrm/edoc', 'Book Date'),
             'file' => Yii::t('andahrm/edoc', 'File'),
             'file_name' => Yii::t('andahrm/edoc', 'File Name'),
+            'title' => Yii::t('andahrm/edoc', 'Title'),
+            'usage' => Yii::t('andahrm', 'Usage'),
+            'created_at' => Yii::t('andahrm', 'Created At'),
+            'created_by' => Yii::t('andahrm', 'Created By'),
+            'updated_at' => Yii::t('andahrm', 'Updated At'),
+            'updated_by' => Yii::t('andahrm', 'Updated By'),
         ];
     }
 
@@ -119,6 +122,10 @@ class EdocInsignia extends \yii\db\ActiveRecord {
         $str[] = $this->getAttributeLabel('book_date') . ' ' . Yii::$app->formatter->asDate($this->book_date);
         $str[] = $this->getAttributeLabel('public_date') . ' ' . Yii::$app->formatter->asDate($this->public_date);
         return implode(', ', $str);
+    }
+    
+    public function getUsage(){
+        return count($this->insigniaPeople);
     }
 
 }
