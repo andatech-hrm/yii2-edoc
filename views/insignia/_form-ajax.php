@@ -71,9 +71,12 @@ if ($formAction !== null)
 
     <div class="row">
         <div class="col-sm-3">        
+            <?php echo $form->field($model, 'page_number')->textInput(); ?>
+        </div>
+        <div class="col-sm-3">        
             <?php echo $form->field($model, 'public_date')->widget(DatePicker::classname(), WidgetSettings::DatePicker()); ?>
         </div>
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <?=
             $form->field($model, 'file')->widget(FileInput::classname(), [
                 'options' => ['accept' => ['pdf/*', 'image/*']],

@@ -76,7 +76,7 @@ class EdocInsignia extends \yii\db\ActiveRecord {
                 [['public_date', 'book_date'], 'safe'],
                 [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
                 [['book_date'], 'required'],
-                [['book_number', 'part_number', 'book_at'], 'string', 'max' => 20],
+                [['page_number', 'book_number', 'part_number', 'book_at'], 'string', 'max' => 20],
                 [['file_name'], 'string', 'max' => 255],
                 ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update']],
         ];
@@ -87,6 +87,7 @@ class EdocInsignia extends \yii\db\ActiveRecord {
      */
     public function attributeLabels() {
         return [
+            'page_number' => Yii::t('andahrm/edoc', 'Page Number'),
             'book_number' => Yii::t('andahrm/edoc', 'Book Number'),
             'part_number' => Yii::t('andahrm/edoc', 'Part Number'),
             'book_at' => Yii::t('andahrm/edoc', 'Book At'),
@@ -119,6 +120,7 @@ class EdocInsignia extends \yii\db\ActiveRecord {
         $str[] = $this->getAttributeLabel('book_number') . ' ' . $this->book_number;
         $str[] = $this->getAttributeLabel('part_number') . ' ' . $this->part_number;
         $str[] = $this->getAttributeLabel('book_at') . ' ' . $this->book_at;
+        $str[] = $this->getAttributeLabel('page_number') . ' ' . $this->page_number;
         $str[] = $this->getAttributeLabel('book_date') . ' ' . Yii::$app->formatter->asDate($this->book_date);
         $str[] = $this->getAttributeLabel('public_date') . ' ' . Yii::$app->formatter->asDate($this->public_date);
         return implode(', ', $str);
