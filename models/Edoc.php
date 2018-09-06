@@ -43,15 +43,15 @@ class Edoc extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-                [['code', 'date_code', 'title',], 'required'],
-                [['date_code'], 'safe'],
-                [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-                [['code'], 'string', 'max' => 255],
-                [['title', 'file_name'], 'string', 'max' => 255],
-                ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update','insert-insignia']],
+            [['code', 'date_code', 'title',], 'required'],
+            [['date_code'], 'safe'],
+            [['created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['code'], 'string', 'max' => 255],
+            [['title', 'file_name'], 'string', 'max' => 255],
+            ['file', 'file', 'extensions' => 'png, jpg, pdf', 'on' => ['insert', 'update', 'insert-insignia']],
         ];
     }
-    
+
     public function scenarios() {
         $scenarios = parent::scenarios();
         $scenarios['insert-insignia'] = $scenarios['default'];
@@ -63,17 +63,17 @@ class Edoc extends \yii\db\ActiveRecord {
      */
     function behaviors() {
         return [
-                [
+            [
                 'class' => BlameableBehavior::className(),
             ],
-                [
+            [
                 'class' => TimestampBehavior::className(),
             ],
-                [
+            [
                 'class' => UploadBehavior::className(),
                 'attribute' => 'file',
                 //'attributeName' => 'file_name',
-                'scenarios' => ['insert', 'update','insert-insignia'],
+                'scenarios' => ['insert', 'update', 'insert-insignia'],
                 'path' => '@uploads/edoc/{id}',
                 'url' => '/uploads/edoc/{id}',
             ],
@@ -117,8 +117,9 @@ class Edoc extends \yii\db\ActiveRecord {
         return $this->hasMany(PersonPostionSalary::className(), ['edoc_id' => 'id']);
     }
 
-    public static function getList() {
-        return ArrayHelper::map(self::find()->all(), 'id', 'codeTitle1');
+    public static function getList($id) {
+        $model = self::find()->andFilterWhere(['id' => $id])->limit(20)->all();
+        return ArrayHelper::map($model, 'id', 'codeTitle1');
     }
 
     public function getCodeTitle() {
@@ -161,9 +162,9 @@ class Edoc extends \yii\db\ActiveRecord {
         $ss = new \yii\i18n\Formatter;
         return $ss->asDate($this->date_code);
     }
-    
-    public function getInsignia(){
-        return $this->hasOne(EdocInsignia::className(),['edoc_id'=>'id']);
+
+    public function getInsignia() {
+        return $this->hasOne(EdocInsignia::className(), ['edoc_id' => 'id']);
     }
-    
+
 }
