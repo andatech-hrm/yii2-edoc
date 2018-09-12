@@ -117,7 +117,7 @@ class Edoc extends \yii\db\ActiveRecord {
         return $this->hasMany(PersonPostionSalary::className(), ['edoc_id' => 'id']);
     }
 
-    public static function getList($id) {
+    public static function getList($id = null) {
         $model = self::find()->andFilterWhere(['id' => $id])->limit(20)->all();
         return ArrayHelper::map($model, 'id', 'codeTitle1');
     }
